@@ -9,6 +9,8 @@ import pify from 'pify';
 import * as recast from 'recast';
 import path from 'path';
 
+const cfgFile = 'config.js';
+
 // If the user defines XDG_CONFIG_HOME they definitely want their config there,
 // otherwise use the home directory in linux/mac and userdata in windows
 const applicationDirectory =
@@ -16,14 +18,14 @@ const applicationDirectory =
     ? path.join(process.env.XDG_CONFIG_HOME, 'hyper')
     : process.platform == 'win32'
     ? path.join(process.env.APPDATA!, 'Hyper')
-    : os.homedir();
+    : path.join(os.homedir(), '.hyper');
 
-const devConfigFileName = path.join(__dirname, `../.hyper.js`);
+const devConfigFileName = path.join(__dirname, '../', cfgFile);
 
 const fileName =
   process.env.NODE_ENV !== 'production' && fs.existsSync(devConfigFileName)
     ? devConfigFileName
-    : path.join(applicationDirectory, '.hyper.js');
+    : path.join(applicationDirectory, cfgFile);
 
 /**
  * We need to make sure the file reading and parsing is lazy so that failure to

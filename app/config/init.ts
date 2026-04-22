@@ -2,6 +2,7 @@ import vm from 'vm';
 import notify from '../notify';
 import mapKeys from '../utils/map-keys';
 import {parsedConfig, rawConfig, configOptions} from '../../lib/config';
+import {cfgPath} from './paths';
 
 const _extract = (script?: vm.Script): Record<string, any> => {
   const module: Record<string, any> = {};
@@ -15,7 +16,7 @@ const _extract = (script?: vm.Script): Record<string, any> => {
 
 const _syntaxValidation = (cfg: string) => {
   try {
-    return new vm.Script(cfg, {filename: '.hyper.js', displayErrors: true});
+    return new vm.Script(cfg, {filename: cfgPath, displayErrors: true});
   } catch (_err) {
     const err = _err as {name: string};
     notify(`Error loading config: ${err.name}`, `${err}`, {error: err});

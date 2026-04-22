@@ -202,7 +202,7 @@ function syncPackageJSON() {
   const dependencies = toDependencies(plugins);
   const pkg = {
     name: 'hyper-plugins',
-    description: 'Auto-generated from `~/.hyper.js`!',
+    description: 'Auto-generated from `~/.hyper/config.js`!',
     private: true,
     version: '0.0.1',
     repository: 'vercel/hyper',

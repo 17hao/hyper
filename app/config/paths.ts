@@ -5,7 +5,7 @@ import {statSync} from 'fs';
 import {resolve, join} from 'path';
 import isDev from 'electron-is-dev';
 
-const cfgFile = '.hyper.js';
+const cfgFile = 'config.js';
 const defaultCfgFile = 'config-default.js';
 const homeDirectory = homedir();
 
@@ -16,7 +16,7 @@ const applicationDirectory =
     ? join(process.env.XDG_CONFIG_HOME, 'hyper')
     : process.platform == 'win32'
     ? app.getPath('userData')
-    : homedir();
+    : join(homedir(), '.hyper');
 
 let cfgDir = applicationDirectory;
 let cfgPath = join(applicationDirectory, cfgFile);
@@ -38,7 +38,7 @@ if (isDev) {
   }
 }
 
-const plugins = resolve(cfgDir, '.hyper_plugins');
+const plugins = resolve(cfgDir, 'plugins');
 const plugs = {
   legacyBase: resolve(homeDirectory, '.hyper_plugins'),
   legacyLocal: resolve(homeDirectory, '.hyper_plugins', 'local'),
