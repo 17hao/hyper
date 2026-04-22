@@ -158,7 +158,7 @@ module.exports = {
     disableLigatures: true,
 
     // set to true to disable auto updates
-    disableAutoUpdates: false,
+    disableAutoUpdates: true,
 
     // set to true to enable screen reading apps (like NVDA) to read the contents of the terminal
     screenReaderMode: false,
