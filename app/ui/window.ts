@@ -114,7 +114,9 @@ export function newWindow(
     // the callback passed as parameter, and deleted right after.
     (app.windowCallback || fn)(window);
     app.windowCallback = undefined;
-    fetchNotifications(window);
+    
+    // fetchNotifications(window);
+
     // auto updates
     if (!isDev) {
       updater(window);
