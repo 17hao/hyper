@@ -90,6 +90,8 @@ export default class Term extends React.PureComponent<TermProps> {
   termDefaultBellSound: string | null;
   fitAddon: FitAddon;
   searchAddon: SearchAddon;
+  searchResultIndex = -1;
+  searchResultCount = 0;
   static rendererTypes: Record<string, string>;
   term!: Terminal;
   resizeObserver!: ResizeObserver;
@@ -158,6 +160,7 @@ export default class Term extends React.PureComponent<TermProps> {
       this.term.attachCustomKeyEventHandler(this.keyboardHandler);
       this.term.loadAddon(this.fitAddon);
       this.term.loadAddon(this.searchAddon);
+      this.setupSearchListener();
       this.term.loadAddon(
         new WebLinksAddon(
           (event: MouseEvent | undefined, uri: string) => {
@@ -186,6 +189,7 @@ export default class Term extends React.PureComponent<TermProps> {
       // get the cached plugins
       this.fitAddon = props.fitAddon!;
       this.searchAddon = props.searchAddon!;
+      this.setupSearchListener();
     }
 
     this.fitAddon.fit();
@@ -296,19 +300,37 @@ export default class Term extends React.PureComponent<TermProps> {
     this.term.reset();
   }
 
+  getSearchOptions = () => {
+    const defaultColor = '#f20794';
+    const matchColor = this.props.selectionColor || defaultColor;
+    const activeMatchColor = defaultColor;
+    return {
+      decorations: {
+        matchBackground: matchColor,
+        matchBorder: matchColor,
+        matchOverviewRuler: matchColor,
+        activeMatchBackground: activeMatchColor,
+        activeMatchBorder: activeMatchColor,
+        activeMatchColorOverviewRuler: activeMatchColor
+      }
+    };
+  };
+
   search = (searchTerm = '') => {
-    this.searchAddon.findNext(searchTerm);
+    this.searchAddon.findNext(searchTerm, this.getSearchOptions());
   };
 
   searchNext = (searchTerm: string) => {
-    this.searchAddon.findNext(searchTerm);
+    this.searchAddon.findNext(searchTerm, this.getSearchOptions());
   };
 
   searchPrevious = (searchTerm: string) => {
-    this.searchAddon.findPrevious(searchTerm);
+    this.searchAddon.findPrevious(searchTerm, this.getSearchOptions());
   };
 
   closeSearchBox = () => {
+    this.searchAddon.clearDecorations();
+    this.searchAddon.clearActiveDecoration();
     this.props.onCloseSearch();
     this.term.focus();
   };
@@ -328,6 +350,21 @@ export default class Term extends React.PureComponent<TermProps> {
     this.fitAddon.fit();
   }
 
+  setupSearchListener = () => {
+    this.disposableListeners.push(
+      this.searchAddon.onDidChangeResults((results) => {
+        if (results) {
+          this.searchResultIndex = results.resultIndex;
+          this.searchResultCount = results.resultCount;
+        } else {
+          this.searchResultIndex = -1;
+          this.searchResultCount = 0;
+        }
+        this.forceUpdate();
+      })
+    );
+  };
+
   keyboardHandler(e: any) {
     // Has Mousetrap flagged this event as a command?
     return !e.catched;
@@ -346,6 +383,11 @@ export default class Term extends React.PureComponent<TermProps> {
 
     if (!prevProps.search && this.props.search) {
       this.search();
+    }
+
+    // Clear decorations when search is closed
+    if (prevProps.search && !this.props.search) {
+      this.searchAddon.findNext('');
     }
 
     // Update only options that have changed.
@@ -441,6 +483,8 @@ export default class Term extends React.PureComponent<TermProps> {
             next={this.searchNext}
             prev={this.searchPrevious}
             close={this.closeSearchBox}
+            resultIndex={this.searchResultIndex}
+            resultCount={this.searchResultCount}
           />
         ) : (
           ''

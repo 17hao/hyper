@@ -318,6 +318,8 @@ export type SearchBoxProps = {
   next: (searchTerm: string) => void;
   prev: (searchTerm: string) => void;
   close: () => void;
+  resultIndex?: number;
+  resultCount?: number;
 };
 
 import {FitAddon} from 'xterm-addon-fit';
