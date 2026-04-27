@@ -72,7 +72,10 @@ const url = `file://${resolve(isDev ? __dirname : app.getAppPath(), 'index.html'
 console.log('electron will open', url);
 
 async function installDevExtensions(isDev_: boolean) {
-  if (!isDev_) {
+  // Allow disabling devtools extension installation. Useful when the Chrome
+  // WebStore download is blocked / proxied and results in a corrupted CRX
+  // (e.g. "Invalid header: Does not start with Cr24").
+  if (!isDev_ || process.env.HYPER_DISABLE_DEVTOOLS_EXTENSIONS) {
     return [];
   }
   const installer = await import('electron-devtools-installer');
@@ -89,7 +92,12 @@ async function installDevExtensions(isDev_: boolean) {
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.on('ready', () =>
+  // DevTools extensions are nice-to-have in dev mode; failures should not block
+  // launching the app.
   installDevExtensions(isDev)
+    .catch((err) => {
+      console.error('Error while loading devtools extensions', err);
+    })
     .then(() => {
       function createWindow(
         fn?: (win: BrowserWindow) => void,
@@ -205,9 +213,6 @@ app.on('ready', () =>
         }
         void installCLI(false);
       }
-    })
-    .catch((err) => {
-      console.error('Error while loading devtools extensions', err);
     })
 );
 
