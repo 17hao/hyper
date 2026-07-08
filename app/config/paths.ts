@@ -5,18 +5,13 @@ import {statSync} from 'fs';
 import {resolve, join} from 'path';
 import isDev from 'electron-is-dev';
 
-const cfgFile = 'config.js';
+const cfgFile = 'hyper.js';
 const defaultCfgFile = 'config-default.js';
 const homeDirectory = homedir();
 
-// If the user defines XDG_CONFIG_HOME they definitely want their config there,
-// otherwise use the home directory in linux/mac and userdata in windows
+// If the user defines XDG_CONFIG_HOME they definitely want their config there, otherwise use the userdata
 const applicationDirectory =
-  process.env.XDG_CONFIG_HOME !== undefined
-    ? join(process.env.XDG_CONFIG_HOME, 'hyper')
-    : process.platform == 'win32'
-    ? app.getPath('userData')
-    : join(homedir(), '.hyper');
+  process.env.XDG_CONFIG_HOME !== undefined ? join(process.env.XDG_CONFIG_HOME, 'hyper') : app.getPath('userData');
 
 let cfgDir = applicationDirectory;
 let cfgPath = join(applicationDirectory, cfgFile);

@@ -1,5 +1,6 @@
 {
   "name": "hyper",
+  "productName": "Hyper",
   "version": "3.4.1-dev-v2",
   "repository": "zeit/hyper",
   "scripts": {
