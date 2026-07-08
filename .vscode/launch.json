@@ -9,14 +9,28 @@
       "program": "${workspaceRoot}/target/index.js",
       "protocol": "inspector"
     },
-     {
+    {
       "type": "node",
       "request": "launch",
       "name": "cli",
       "runtimeExecutable": "node",
       "program": "${workspaceRoot}/bin/cli.js",
-      "args": ["--help"],
+      "args": [
+        "--help"
+      ],
       "protocol": "inspector"
-    }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Hyper (yarn dev + yarn app)",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": [
+        "app"
+      ],
+      "preLaunchTask": "yarn dev",
+      "console": "integratedTerminal",
+      "protocol": "inspector"
+    },
   ]
 }

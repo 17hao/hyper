@@ -20,4 +20,5 @@ config.js
 .DS_Store
 .vscode/*
 !.vscode/launch.json
+!.vscode/tasks.json
 .idea
