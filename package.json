@@ -1,7 +1,7 @@
 {
   "name": "hyper",
   "productName": "Hyper",
-  "version": "3.4.1-dev-v2",
+  "version": "3.4.1-dev-v3",
   "repository": "zeit/hyper",
   "scripts": {
     "start": "echo 'please run `yarn run dev` in one tab and then `yarn run app` in another one'",
