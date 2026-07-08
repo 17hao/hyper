@@ -8,6 +8,11 @@ const proxyquire = require('proxyquire').noCallThru();
 test('existsOnNpm() builds the url for non-scoped packages', (t) => {
   let getUrl: string;
   const {existsOnNpm} = proxyquire('../../cli/api', {
+    electron: {
+      app: {
+        getPath: () => '/tmp'
+      }
+    },
     got: {
       get(url: string) {
         getUrl = url;
@@ -29,6 +34,11 @@ test('existsOnNpm() builds the url for non-scoped packages', (t) => {
 test('existsOnNpm() builds the url for scoped packages', (t) => {
   let getUrl: string;
   const {existsOnNpm} = proxyquire('../../cli/api', {
+    electron: {
+      app: {
+        getPath: () => '/tmp'
+      }
+    },
     got: {
       get(url: string) {
         getUrl = url;
