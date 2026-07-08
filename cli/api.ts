@@ -8,17 +8,13 @@ const registryUrl = registryUrlModule();
 import pify from 'pify';
 import * as recast from 'recast';
 import path from 'path';
+import {app} from 'electron';
 
-const cfgFile = 'config.js';
+const cfgFile = 'hyper.js';
 
-// If the user defines XDG_CONFIG_HOME they definitely want their config there,
-// otherwise use the home directory in linux/mac and userdata in windows
+// If the user defines XDG_CONFIG_HOME they definitely want their config there, otherwise use the userdata
 const applicationDirectory =
-  process.env.XDG_CONFIG_HOME !== undefined
-    ? path.join(process.env.XDG_CONFIG_HOME, 'hyper')
-    : process.platform == 'win32'
-    ? path.join(process.env.APPDATA!, 'Hyper')
-    : path.join(os.homedir(), '.hyper');
+  process.env.XDG_CONFIG_HOME !== undefined ? path.join(process.env.XDG_CONFIG_HOME, 'hyper') : app.getPath('userData');
 
 const devConfigFileName = path.join(__dirname, '../', cfgFile);
 
