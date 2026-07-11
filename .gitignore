@@ -16,6 +16,7 @@ yarn-error.log
 .hyper.js
 .hyper_plugins
 config.js
+hyper.js
 
 .DS_Store
 .vscode/*
