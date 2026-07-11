@@ -1,7 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import fs from 'fs';
-import os from 'os';
 import got from 'got';
 import registryUrlModule from 'registry-url';
 const registryUrl = registryUrlModule();

@@ -1,4 +1,4 @@
-import {app, BrowserWindow, shell, Menu, BrowserWindowConstructorOptions, Event} from 'electron';
+import {app, BrowserWindow, shell, Menu, BrowserWindowConstructorOptions} from 'electron';
 import {isAbsolute, normalize, sep} from 'path';
 import {URL, fileURLToPath} from 'url';
 import {v4 as uuidv4} from 'uuid';
@@ -8,7 +8,6 @@ import toElectronBackgroundColor from '../utils/to-electron-background-color';
 import {icon, homeDirectory} from '../config/paths';
 import createRPC from '../rpc';
 import notify from '../notify';
-import fetchNotifications from '../notifications';
 import Session from '../session';
 import contextMenuTemplate from './contextmenu';
 import {execCommand} from '../commands';

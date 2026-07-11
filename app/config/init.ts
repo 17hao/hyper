@@ -43,8 +43,8 @@ const _init = (cfg: {userCfg: string; defaultCfg: rawConfig}): parsedConfig => {
     // Merging platform specific keymaps with user defined keymaps
     keymaps: mapKeys({...cfg.defaultCfg.keymaps, ..._cfg?.keymaps}),
     // Ignore undefined values in plugin and localPlugins array Issue #1862
-    plugins: (_cfg?.plugins && _cfg.plugins.filter(Boolean)) || [],
-    localPlugins: (_cfg?.localPlugins && _cfg.localPlugins.filter(Boolean)) || []
+    plugins: _cfg?.plugins?.filter(Boolean) || [],
+    localPlugins: _cfg?.localPlugins?.filter(Boolean) || []
   };
 };
 
